@@ -34,16 +34,22 @@ unsigned long updateTimer = 0;
 unsigned long updateInterval = 8000;
 
 // List of shared attributes for subscribing to their updates
-constexpr std::array<const char *, 2> SHARED_ATTRIBUTES_LIST = {
+const std::array<const char *, 2> SHARED_ATTRIBUTES_LIST = {
   "uploadIntervalMs",
   "updateIntervalMs"
 };
 
 void processSharedAttributes(const Shared_Attribute_Data &data);
+RPC_Response setUploadMode(const RPC_Data &data);
+RPC_Response doReset(const RPC_Data &data);
 
 const Shared_Attribute_Callback attributes_callback(&processSharedAttributes, SHARED_ATTRIBUTES_LIST.cbegin(), SHARED_ATTRIBUTES_LIST.cend());
 const Attribute_Request_Callback attribute_shared_request_callback(&processSharedAttributes, SHARED_ATTRIBUTES_LIST.cbegin(), SHARED_ATTRIBUTES_LIST.cend());
 
+const std::array<RPC_Callback, 2> rpc_callbacks = {
+  RPC_Callback{"restart", doReset },
+  RPC_Callback{"setUploadMode", setUploadMode },
+};
 
 ///////////////////////////////////////
 // FUNCIONS
@@ -69,7 +75,7 @@ const bool reconnect() {
   return true;
 }
 
-
+// CALLBACK
 void processSharedAttributes(const Shared_Attribute_Data &data) {
   for (auto it = data.begin(); it != data.end(); ++it) {
     if (strcmp(it->key().c_str(), "uploadIntervalMs") == 0) {
@@ -93,6 +99,34 @@ void processSharedAttributes(const Shared_Attribute_Data &data) {
   // attributesChanged = true;
 }
 
+RPC_Response doReset(const RPC_Data &data) {
+  Serial.println("Received reset RPC method");
+
+  // Process data
+  int delayBeforeReset = data;
+
+  Serial.print("delay before reset");
+  Serial.println(delayBeforeReset);
+
+  if (delayBeforeReset < 0 || delayBeforeReset > 1000) {
+    return RPC_Response("error", "delay should be 0 to 1000 ms");
+  }
+
+  return RPC_Response("status", true);
+}
+
+
+RPC_Response setUploadMode(const RPC_Data &data) {
+  Serial.println("Received setUploadMode RPC method");
+
+  // Process data
+  int newMode = data;
+
+  Serial.print("setUploadMode");
+  Serial.println(newMode);
+
+  return RPC_Response("newMode", newMode);
+}
 
 ///////////////////////////////////////
 // MAIN
@@ -123,6 +157,7 @@ void loop() {
     }
     Serial.println("Connect success");
 
+    tb.RPC_Subscribe(rpc_callbacks.cbegin(), rpc_callbacks.cend());
     tb.Shared_Attributes_Subscribe(attributes_callback);
     tb.Shared_Attributes_Request(attribute_shared_request_callback);
   }
