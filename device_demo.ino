@@ -31,7 +31,19 @@ unsigned long uploadTimer = 0;
 unsigned long uploadInterval = 2000;
 // for update client attribute
 unsigned long updateTimer = 0;
-unsigned long updateInterval = 5000;
+unsigned long updateInterval = 8000;
+
+// List of shared attributes for subscribing to their updates
+constexpr std::array<const char *, 2> SHARED_ATTRIBUTES_LIST = {
+  "uploadIntervalMs",
+  "updateIntervalMs"
+};
+
+void processSharedAttributes(const Shared_Attribute_Data &data);
+
+
+const Attribute_Request_Callback attribute_shared_request_callback(&processSharedAttributes, SHARED_ATTRIBUTES_LIST.cbegin(), SHARED_ATTRIBUTES_LIST.cend());
+
 
 ///////////////////////////////////////
 // FUNCIONS
@@ -55,6 +67,30 @@ const bool reconnect() {
 
   InitWiFi();
   return true;
+}
+
+
+void processSharedAttributes(const Shared_Attribute_Data &data) {
+  for (auto it = data.begin(); it != data.end(); ++it) {
+    if (strcmp(it->key().c_str(), "uploadIntervalMs") == 0) {
+      const uint32_t v = it->value().as<uint32_t>();
+      if (v < 500 || v > 60000) {
+        continue;
+      }
+      uploadInterval = v;
+      Serial.print("set uploadInterval to ");
+      Serial.println(v);
+    } else if (strcmp(it->key().c_str(), "updateIntervalMs") == 0) {
+      const uint32_t v = it->value().as<uint32_t>();
+      if (v < 2000 || v > 60000) {
+        continue;
+      }
+      updateInterval = v;
+      Serial.print("set updateInterval to ");
+      Serial.println(v);
+    }
+  }
+  // attributesChanged = true;
 }
 
 
@@ -86,6 +122,8 @@ void loop() {
       return;
     }
     Serial.println("Connect success");
+
+    tb.Shared_Attributes_Request(attribute_shared_request_callback);
   }
 
   unsigned long ts = millis();
