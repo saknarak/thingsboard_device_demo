@@ -26,6 +26,10 @@ WiFiClient wifiClient;
 Arduino_MQTT_Client mqttClient(wifiClient);
 ThingsBoard tb(mqttClient, MAX_MESSAGE_SIZE);
 
+// for upload telemetry
+unsigned long uploadTimer = 0;
+unsigned long uploadInterval = 2000;
+
 ///////////////////////////////////////
 // FUNCIONS
 ///////////////////////////////////////
@@ -79,6 +83,17 @@ void loop() {
       return;
     }
     Serial.println("Connect success");
+  }
+
+  // 3. upload telemetry data
+  unsigned long ts = millis();
+  if (ts - uploadTimer > uploadInterval) {
+    uploadTimer = ts;
+
+    // upload
+    Serial.println("upload...");
+    tb.sendTelemetryData("temperature", random(20, 30));
+    tb.sendTelemetryData("humidity", random(3, 8) * 10);
   }
 }
 
