@@ -29,6 +29,9 @@ ThingsBoard tb(mqttClient, MAX_MESSAGE_SIZE);
 // for upload telemetry
 unsigned long uploadTimer = 0;
 unsigned long uploadInterval = 2000;
+// for update client attribute
+unsigned long updateTimer = 0;
+unsigned long updateInterval = 5000;
 
 ///////////////////////////////////////
 // FUNCIONS
@@ -85,8 +88,9 @@ void loop() {
     Serial.println("Connect success");
   }
 
-  // 3. upload telemetry data
   unsigned long ts = millis();
+
+  // 3. upload telemetry data
   if (ts - uploadTimer > uploadInterval) {
     uploadTimer = ts;
 
@@ -100,6 +104,25 @@ void loop() {
     };
     tb.sendTelemetry(data, 2);
   }
+
+  // 4. update client attributes
+  if (ts - updateTimer > updateInterval) {
+    updateTimer = ts;
+    tb.sendAttributeData("rssi", WiFi.RSSI());
+    tb.sendAttributeData("channel", WiFi.channel());
+    tb.sendAttributeData("bssid", WiFi.BSSIDstr().c_str());
+    tb.sendAttributeData("localIp", WiFi.localIP().toString().c_str());
+    tb.sendAttributeData("ssid", WiFi.SSID().c_str());
+    // Attribute data[] = {
+    //   Attribute("rssi", WiFi.RSSI()),
+    //   Attribute("channel",  WiFi.channel()),
+    //   Attribute("bssid",  WiFi.BSSIDstr().c_str()),
+    //   Attribute("localIp",  WiFi.localIP().toString().c_str()),
+    //   Attribute("ssid",  WiFi.SSID().c_str()),
+    // };
+    // tb.sendAttributes(data, 5);
+  }
+
 }
 
 
