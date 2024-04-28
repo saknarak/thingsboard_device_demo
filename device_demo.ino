@@ -52,7 +52,7 @@ const std::array<RPC_Callback, 2> rpc_callbacks = {
 };
 
 // FIX ISSUE RPC NOT RESPONSE
-DynamicJsonDocument doc(1024);
+DynamicJsonDocument rpcDoc(1024);
 
 ///////////////////////////////////////
 // FUNCIONS
@@ -115,9 +115,9 @@ RPC_Response doReset(const RPC_Data &data) {
     return RPC_Response("error", "delay should be 0 to 1000 ms");
   }
   
-  doc.clear();
-  doc["status"] = true;
-  return RPC_Response(doc);
+  rpcDoc.clear();
+  rpcDoc["status"] = true;
+  return RPC_Response(rpcDoc);
 }
 
 
@@ -130,7 +130,9 @@ RPC_Response setUploadMode(const RPC_Data &data) {
   Serial.print("setUploadMode");
   Serial.println(newMode);
 
-  return RPC_Response("newMode", newMode);
+  rpcDoc.clear()
+  rpcDoc["newMode"] = newMode;
+  return RPC_Response(rpcDoc);
 }
 
 ///////////////////////////////////////

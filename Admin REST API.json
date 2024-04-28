@@ -1,0 +1,102 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Admin REST API",
+    "collectionId": "34419b06-b034-4e26-964b-c7a40ce88fa2",
+    "dateExported": "2024-04-28T09:44:20.062Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "d129ce87-6afd-4ade-8121-d1559568be27",
+            "colId": "34419b06-b034-4e26-964b-c7a40ce88fa2",
+            "containerId": "",
+            "name": "login",
+            "url": "http://localhost:8080/api/auth/login",
+            "method": "POST",
+            "sortNum": 15000,
+            "created": "2024-04-27T07:19:49.861Z",
+            "modified": "2024-04-27T07:21:24.999Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\": \"admin@smartfarm.com\",\n  \"password\": \"123456\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "ea679f55-f3a6-417b-8d42-ed09da225f7a",
+            "colId": "34419b06-b034-4e26-964b-c7a40ce88fa2",
+            "containerId": "",
+            "name": "device list",
+            "url": "http://localhost:8080/api/tenant/deviceInfos?pageSize=10&page=0&sortProperty=createdTime&sortOrder=DESC",
+            "method": "GET",
+            "sortNum": 25000,
+            "created": "2024-04-27T07:18:19.142Z",
+            "modified": "2024-04-28T08:15:54.101Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "pageSize",
+                    "value": "10",
+                    "isPath": false
+                },
+                {
+                    "name": "page",
+                    "value": "0",
+                    "isPath": false
+                },
+                {
+                    "name": "sortProperty",
+                    "value": "createdTime",
+                    "isPath": false
+                },
+                {
+                    "name": "sortOrder",
+                    "value": "DESC",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "66824ceb-9246-4bd0-a5b9-4db322d9d864",
+            "colId": "34419b06-b034-4e26-964b-c7a40ce88fa2",
+            "containerId": "",
+            "name": "set shared attrib",
+            "url": "http://localhost:8080/api/plugins/telemetry/DEVICE/32714c50-0452-11ef-aee1-8f9a1cd73661/SHARED_SCOPE",
+            "method": "POST",
+            "sortNum": 35000,
+            "created": "2024-04-27T07:27:32.348Z",
+            "modified": "2024-04-28T08:16:17.378Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"uploadIntervalSec\": 15,\n  \"led\": 0\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "8a2280ac-fc8f-441b-918b-55d4343e120d",
+            "colId": "34419b06-b034-4e26-964b-c7a40ce88fa2",
+            "containerId": "",
+            "name": "get result rpc",
+            "url": "http://localhost:8080/api/rpc/twoway/32714c50-0452-11ef-aee1-8f9a1cd73661",
+            "method": "POST",
+            "sortNum": 45000,
+            "created": "2024-04-28T08:16:22.008Z",
+            "modified": "2024-04-28T09:01:13.595Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"method\": \"restart\",\r\n  \"params\": 500\r\n}\r\n",
+                "form": []
+            }
+        }
+    ],
+    "settings": {
+        "auth": {
+            "type": "bearer",
+            "bearer": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBzbWFydGZhcm0uY29tIiwidXNlcklkIjoiMGVkOWM2YjAtMDQ1MS0xMWVmLWFlZTEtOGY5YTFjZDczNjYxIiwic2NvcGVzIjpbIlRFTkFOVF9BRE1JTiJdLCJzZXNzaW9uSWQiOiJjYWM5MTIzNC1mODcxLTQxYjYtODMwZi1kZTQ4NmM4M2ZlMWQiLCJpc3MiOiJ0aGluZ3Nib2FyZC5pbyIsImlhdCI6MTcxNDI5MjEwMCwiZXhwIjoxNzE0MzAxMTAwLCJmaXJzdE5hbWUiOiJBZG1pbiIsImxhc3ROYW1lIjoiU21hcnRmYXJtIiwiZW5hYmxlZCI6dHJ1ZSwiaXNQdWJsaWMiOmZhbHNlLCJ0ZW5hbnRJZCI6ImM0MmUyY2YwLTA0NTAtMTFlZi1hZWUxLThmOWExY2Q3MzY2MSIsImN1c3RvbWVySWQiOiIxMzgxNDAwMC0xZGQyLTExYjItODA4MC04MDgwODA4MDgwODAifQ.K-oTJ_zmz1VMxhPpeVqKZkDT-XTA3QPp1twL3s9Yo36O16UxbZqNZ8LVaJjrhrRZmwXRfnLk7pGLELDvBhneug"
+        }
+    },
+    "ref": "Qik4HL9LtQAR1Sk0VtSOqVOi4X7Lq7D2apMPrxcloljvMXv14fKbZdNccbnz4Z0oMpICuw7sI4aD4n5e5ovelA"
+}
