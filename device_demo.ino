@@ -92,8 +92,13 @@ void loop() {
 
     // upload
     Serial.println("upload...");
-    tb.sendTelemetryData("temperature", random(20, 30));
-    tb.sendTelemetryData("humidity", random(3, 8) * 10);
+    // tb.sendTelemetryData("temperature", random(20, 30));
+    // tb.sendTelemetryData("humidity", random(3, 8) * 10);
+    Telemetry data[] = {
+      Telemetry("temperature", random(20, 30)),
+      Telemetry("humidity",  random(3, 8) * 10)
+    };
+    tb.sendTelemetry(data, 2);
   }
 }
 
