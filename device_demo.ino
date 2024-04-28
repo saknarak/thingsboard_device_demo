@@ -41,7 +41,7 @@ constexpr std::array<const char *, 2> SHARED_ATTRIBUTES_LIST = {
 
 void processSharedAttributes(const Shared_Attribute_Data &data);
 
-
+const Shared_Attribute_Callback attributes_callback(&processSharedAttributes, SHARED_ATTRIBUTES_LIST.cbegin(), SHARED_ATTRIBUTES_LIST.cend());
 const Attribute_Request_Callback attribute_shared_request_callback(&processSharedAttributes, SHARED_ATTRIBUTES_LIST.cbegin(), SHARED_ATTRIBUTES_LIST.cend());
 
 
@@ -123,6 +123,7 @@ void loop() {
     }
     Serial.println("Connect success");
 
+    tb.Shared_Attributes_Subscribe(attributes_callback);
     tb.Shared_Attributes_Request(attribute_shared_request_callback);
   }
 
