@@ -130,7 +130,7 @@ RPC_Response setUploadMode(const RPC_Data &data) {
   Serial.print("setUploadMode");
   Serial.println(newMode);
 
-  rpcDoc.clear()
+  rpcDoc.clear();
   rpcDoc["newMode"] = newMode;
   return RPC_Response(rpcDoc);
 }
