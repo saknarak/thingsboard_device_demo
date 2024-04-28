@@ -51,6 +51,9 @@ const std::array<RPC_Callback, 2> rpc_callbacks = {
   RPC_Callback{"setUploadMode", setUploadMode },
 };
 
+// FIX ISSUE RPC NOT RESPONSE
+DynamicJsonDocument doc(1024);
+
 ///////////////////////////////////////
 // FUNCIONS
 ///////////////////////////////////////
@@ -111,8 +114,10 @@ RPC_Response doReset(const RPC_Data &data) {
   if (delayBeforeReset < 0 || delayBeforeReset > 1000) {
     return RPC_Response("error", "delay should be 0 to 1000 ms");
   }
-
-  return RPC_Response("status", true);
+  
+  doc.clear();
+  doc["status"] = true;
+  return RPC_Response(doc);
 }
 
 
@@ -157,7 +162,9 @@ void loop() {
     }
     Serial.println("Connect success");
 
-    tb.RPC_Subscribe(rpc_callbacks.cbegin(), rpc_callbacks.cend());
+    if(tb.RPC_Subscribe(rpc_callbacks.cbegin(), rpc_callbacks.cend())) {
+      Serial.println("subscribe rpc ok");
+    }
     tb.Shared_Attributes_Subscribe(attributes_callback);
     tb.Shared_Attributes_Request(attribute_shared_request_callback);
   }
