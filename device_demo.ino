@@ -189,6 +189,7 @@ void loop() {
     tb.sendAttributes(data, 5);
   }
 
+  tb.loop();
 }
 
 
