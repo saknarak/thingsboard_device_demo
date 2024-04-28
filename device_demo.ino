@@ -108,11 +108,32 @@ void loop() {
   // 4. update client attributes
   if (ts - updateTimer > updateInterval) {
     updateTimer = ts;
-    tb.sendAttributeData("rssi", WiFi.RSSI());
-    tb.sendAttributeData("channel", WiFi.channel());
-    tb.sendAttributeData("bssid", WiFi.BSSIDstr().c_str());
-    tb.sendAttributeData("localIp", WiFi.localIP().toString().c_str());
-    tb.sendAttributeData("ssid", WiFi.SSID().c_str());
+    int rssi = WiFi.RSSI();
+    int channel = WiFi.channel();
+    char bssid[64];
+    char localIp[64];
+    char ssid[64];
+    strcpy(bssid, WiFi.BSSIDstr().c_str());
+    strcpy(localIp, WiFi.localIP().toString().c_str());
+    strcpy(ssid, WiFi.SSID().c_str());
+
+    Serial.print("update rssi=");
+    Serial.print(rssi);
+    Serial.print(" channel=");
+    Serial.print(channel);
+    Serial.print(" bssid=");
+    Serial.print(bssid);
+    Serial.print(" localIp=");
+    Serial.print(localIp);
+    Serial.print(" ssid=");
+    Serial.println(ssid);
+    
+    // tb.sendAttributeData("rssi", rssi);
+    // tb.sendAttributeData("channel", channel);
+    // tb.sendAttributeData("bssid", bssid);
+    // tb.sendAttributeData("localIp", localIp);
+    // tb.sendAttributeData("ssid", ssid);
+    
     // Attribute data[] = {
     //   Attribute("rssi", WiFi.RSSI()),
     //   Attribute("channel",  WiFi.channel()),
@@ -120,7 +141,14 @@ void loop() {
     //   Attribute("localIp",  WiFi.localIP().toString().c_str()),
     //   Attribute("ssid",  WiFi.SSID().c_str()),
     // };
-    // tb.sendAttributes(data, 5);
+    Attribute data[] = {
+      Attribute("rssi", rssi),
+      Attribute("channel", channel),
+      Attribute("bssid", bssid),
+      Attribute("localIp", localIp),
+      Attribute("ssid", ssid),
+    };
+    tb.sendAttributes(data, 5);
   }
 
 }
